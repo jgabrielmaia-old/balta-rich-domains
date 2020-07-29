@@ -4,14 +4,44 @@ using System.Collections.Generic;
 namespace PaymentContext.Domain.Entities {
     public class Subscription 
     {
-        public DateTime CreationDate { get; set; }
-        
-        public DateTime LastUpdateDate { get; set; }
-        
-        public DateTime? DueDate { get; set; }
+        private IList<Payment> _payments;
 
-        public bool Active { get; set; }
+        public Subscription(DateTime? dueDate)
+        {
+            CreationDate = DateTime.Now;
+            LastUpdateDate = DateTime.Now;
+            DueDate = dueDate;
+            Active = true;
+            _payments = new List<Payment>();
+        }
 
-        public List<Payment> Payments { get; set; }
+        public DateTime CreationDate { get; private set; }
+        
+        public DateTime LastUpdateDate { get; private set; }
+        
+        public DateTime? DueDate { get; private set; }
+
+        public bool Active { get; private set; }
+
+        public IReadOnlyCollection<Payment> Payments { get; private set; } 
+
+        public void AddPayment(Payment payment) => _payments.Add(payment);
+
+        public void Activate()
+        {
+            Active = true;
+            Updated();
+        }
+
+        public void Deactivate()
+        {
+            Active = false;
+            Updated();
+        }
+
+        private void Updated()
+        {
+            LastUpdateDate = DateTime.Now;
+        }
     }
 }
