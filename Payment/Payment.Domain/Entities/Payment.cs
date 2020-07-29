@@ -1,4 +1,5 @@
 using System;
+using Payment.Domain.ValueObjects;
 
 namespace PaymentContext.Domain.Entities {
     public abstract class Payment
@@ -8,9 +9,9 @@ namespace PaymentContext.Domain.Entities {
                           decimal total, 
                           decimal totalPaid, 
                           string payer, 
-                          string docunent, 
-                          string address, 
-                          string mail)
+                          Document docunent, 
+                          Address address, 
+                          Email email)
         {
             Id = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10).ToUpper();
             PaidAtDate = paidAtDate;
@@ -20,7 +21,7 @@ namespace PaymentContext.Domain.Entities {
             Payer = payer;
             Docunent = docunent;
             Address = address;
-            Mail = mail;
+            Email = email;
         }
 
         public string Id { get; private set; }
@@ -35,10 +36,10 @@ namespace PaymentContext.Domain.Entities {
 
         public string Payer { get; private set; }
         
-        public string Docunent { get; private set; }
+        public Document Docunent { get; private set; }
         
-        public string Address { get; private set; }
+        public Address Address { get; private set; }
 
-        public string Mail { get; private set; }
+        public Email Email { get; private set; }
     }
 }

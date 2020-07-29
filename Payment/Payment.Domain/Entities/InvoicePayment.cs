@@ -1,19 +1,20 @@
 using System;
+using Payment.Domain.ValueObjects;
 
 namespace PaymentContext.Domain.Entities {
     public class InvoicePayment : Payment
     {
-        public InvoicePayment(DateTime paidAtDate, 
-                            DateTime dueDate, 
-                            decimal total, 
-                            decimal totalPaid, 
-                            string payer, 
-                            string docunent, 
-                            string address, 
-                            string mail,
-                            string invoiceCode,
-                            string barCode)
-         : base(paidAtDate, dueDate, total, totalPaid, payer, docunent, address, mail)
+        public InvoicePayment(DateTime paidAtDate,
+                              DateTime dueDate,
+                              decimal total,
+                              decimal totalPaid,
+                              string payer,
+                              Document docunent,
+                              Address address,
+                              Email email,
+                              string invoiceCode,
+                              string barCode)
+         : base(paidAtDate, dueDate, total, totalPaid, payer, docunent, address, email)
         {
             InvoiceCode = invoiceCode;
             BarCode = barCode;
