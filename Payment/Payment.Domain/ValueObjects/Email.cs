@@ -1,3 +1,4 @@
+using Flunt.Validations;
 using Payment.Shared.ValueObjects;
 
 namespace Payment.Domain.ValueObjects
@@ -6,7 +7,8 @@ namespace Payment.Domain.ValueObjects
     {
         public Email(string address)
         {
-            Address = address;             
+            Address = address;
+            AddNotifications(new Contract().Requires().IsEmail(address, "Email.Address", "Invalid e-mail!"));
         }
 
         public string Address { get; set; }

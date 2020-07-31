@@ -1,8 +1,10 @@
 using System;
+using Flunt.Validations;
 using Payment.Domain.ValueObjects;
+using Payment.Shared.Entities;
 
 namespace PaymentContext.Domain.Entities {
-    public abstract class Payment
+    public abstract class Payment : Entity
     {
         protected Payment(DateTime paidAtDate, 
                           DateTime dueDate, 
@@ -13,7 +15,7 @@ namespace PaymentContext.Domain.Entities {
                           Address address, 
                           Email email)
         {
-            Id = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10).ToUpper();
+            InvoiceId = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10).ToUpper();
             PaidAtDate = paidAtDate;
             DueDate = dueDate;
             Total = total;
@@ -22,9 +24,14 @@ namespace PaymentContext.Domain.Entities {
             Docunent = docunent;
             Address = address;
             Email = email;
+
+            AddNotifications(new Contract()
+                            .Requires()
+                            .IsGreaterThan(0, Total, "Payment.Total", "The payment value is equal or less than zero")
+                            .IsGreaterOrEqualsThan(Total, TotalPaid, "Payment.TotalPaid", "The total paid is equal or less than the payment value.")); 
         }
 
-        public string Id { get; private set; }
+        public string InvoiceId { get; private set; }
 
         public DateTime PaidAtDate { get; private set; }
 

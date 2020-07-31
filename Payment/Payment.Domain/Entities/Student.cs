@@ -10,7 +10,6 @@ namespace PaymentContext.Domain.Entities {
         private IList<Subscription> _subscriptions;
 
         public Student(Guid id, Name name, Document document, Email email, Address address)
-        : base(id)
         {
             Name = name;
             Document = document;
@@ -39,10 +38,10 @@ namespace PaymentContext.Domain.Entities {
 
         public void AddSubscription(Subscription subscription)
         {
-            foreach (var sub in Subscriptions)
-                sub.Deactivate();
-
-            _subscriptions.Add(subscription);
+            if (_subscriptions.Any(s => s.Active == true))
+                AddNotification("Student.Subscriptions", "You already have an active subscription.");
+            else
+                _subscriptions.Add(subscription);
         }
     }
 }

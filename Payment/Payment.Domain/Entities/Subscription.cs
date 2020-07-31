@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Flunt.Validations;
+using Payment.Shared.Entities;
 
 namespace PaymentContext.Domain.Entities {
-    public class Subscription 
+    public class Subscription : Entity
     {
         private IList<Payment> _payments;
 
@@ -25,7 +27,13 @@ namespace PaymentContext.Domain.Entities {
 
         public IReadOnlyCollection<Payment> Payments { get; private set; } 
 
-        public void AddPayment(Payment payment) => _payments.Add(payment);
+        public void AddPayment(Payment payment) 
+        {
+            AddNotifications(new Contract()
+                            .Requires()
+                            .IsGreaterThan(DateTime.Now, payment.PaidAtDate, "Subscriptions.Payment", "The payment is late."));
+            _payments.Add(payment);
+        } 
 
         public void Activate()
         {
